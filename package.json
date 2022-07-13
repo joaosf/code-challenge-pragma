@@ -1,0 +1,27 @@
+{
+  "name": "code-challenge-pragma",
+  "private": true,
+  "scripts": {
+    "install": "npm run install:server && npm run install:server",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && npm install",
+    "start": "concurrently --kill-others \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "cd server && npm start",
+    "start:client": "cd client && npm start"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "transform": {
+      "^.+\\.(ts|tsx)$": "@swc/jest"
+    },
+    "coveragePathIgnorePatterns": [
+      "dist"
+    ],
+    "setupFiles": [
+      "<rootDir>/.jest/setEnvVars.js"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^7.2.2"
+  }
+}
