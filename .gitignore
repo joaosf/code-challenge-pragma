@@ -1,0 +1,12 @@
+node_modules
+dist
+coverage
+lerna-debug.log
+.parcel-cache
+.idea
+.DS_Store
+.package-lock.json
+
+tests_output/
+
+logs/
