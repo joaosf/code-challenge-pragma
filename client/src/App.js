@@ -1,62 +1,17 @@
 import { useEffect, useState } from 'react';
 
-const data = [
-  {
-    id: '1',
-    name: 'Pilsner',
-    minimumTemperature: 4,
-    maximumTemperature: 6,
-  },
-  {
-    id: '2',
-    name: 'IPA',
-    minimumTemperature: 5,
-    maximumTemperature: 6,
-  },
-  {
-    id: '3',
-    name: 'Lager',
-    minimumTemperature: 4,
-    maximumTemperature: 7,
-  },
-  {
-    id: '4',
-    name: 'Stout',
-    minimumTemperature: 6,
-    maximumTemperature: 8,
-  },
-  {
-    id: '5',
-    name: 'Wheat beer',
-    minimumTemperature: 3,
-    maximumTemperature: 5,
-  },
-  {
-    id: '6',
-    name: 'Pale Ale',
-    minimumTemperature: 4,
-    maximumTemperature: 6,
-  },
-];
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { data } from './utils/constants';
+import { getTemperatureDescription } from './lib/temperature';
+import { processData } from './lib/api-data';
 
 function App() {
   const [items, setItems] = useState({});
-  const server_url = 'http://localhost:8081/temperature';
 
   useEffect(() => {
     const request = () =>
       data.forEach((product) => {
-        fetch(`${server_url}/${product.id}`)
-          .then((response) => response.json())
-          .then((response) =>
-            setItems((prevItems) => ({
-              ...prevItems,
-              [product.id]: {
-                ...product,
-                ...response,
-              },
-            }))
-          );
+        processData(product, setItems);
       });
 
     setInterval(request, 5000);
@@ -65,12 +20,12 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <h2>Beers</h2>
-      <table>
-        <thead>
+    <div className="App container-fluid">
+      <h1 className="display-4">Beers</h1>
+      <table className="table table-hover" size="sm">
+        <thead className="table-dark">
           <tr>
-            <th align="left">Product</th>
+            <th align="left">Name</th>
             <th align="left">Temperature</th>
             <th align="left">Status</th>
           </tr>
@@ -78,18 +33,9 @@ function App() {
         <tbody>
           {Object.keys(items).map((itemKey) => (
             <tr key={items[itemKey].id}>
-              <td width={150}>{items[itemKey].name}</td>
-              <td width={150}>{items[itemKey].temperature}</td>
-              <td width={150}>
-                {items[itemKey].temperature <
-                  items[itemKey].minimumTemperature && <span>too low</span>}
-                {items[itemKey].temperature >
-                  items[itemKey].maximumTemperature && <span>too high</span>}
-                {items[itemKey].temperature <=
-                  items[itemKey].maximumTemperature &&
-                  items[itemKey].temperature >=
-                    items[itemKey].minimumTemperature && <span>all good</span>}
-              </td>
+              <td className="col-4">{items[itemKey].name}</td>
+              <td className="col-4">{items[itemKey].temperature}</td>
+              <td className="col-4">{getTemperatureDescription(items[itemKey])}</td>
             </tr>
           ))}
         </tbody>
