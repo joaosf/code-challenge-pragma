@@ -2,7 +2,7 @@
   "name": "code-challenge-pragma",
   "private": true,
   "scripts": {
-    "install": "npm run install:server && npm run install:server",
+    "install": "npm run install:client && npm run install:server",
     "install:server": "cd server && npm install",
     "install:client": "cd client && npm install",
     "start": "concurrently --kill-others \"npm run start:server\" \"npm run start:client\"",
