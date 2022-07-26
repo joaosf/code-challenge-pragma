@@ -41,11 +41,12 @@ const data = [
 
 function App() {
   const [items, setItems] = useState({});
+  const server_url = 'http://localhost:8081/temperature';
 
   useEffect(() => {
     const request = () =>
       data.forEach((product) => {
-        fetch(`http://localhost:8081/temperature/${product.id}`)
+        fetch(`${server_url}/${product.id}`)
           .then((response) => response.json())
           .then((response) =>
             setItems((prevItems) => ({
